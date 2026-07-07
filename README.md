@@ -52,7 +52,7 @@
             flex-direction: column;
         }
 
-        /* --- Slot Gambar Kop Surat Atas (Hasil Crop) --- */
+        /* --- Slot Gambar Kop Surat Atas --- */
         .kop-gambar-atas {
             width: 100%;
             margin-bottom: 20px;
@@ -101,7 +101,7 @@
         /* --- Bagian Tanda Tangan & Nominal --- */
         .kwitansi-footer {
             margin-top: 60px; display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 40px; /* Jarak sebelum logo paling bawah */
+            margin-bottom: 40px;
         }
         .box-nominal {
             border: 2px solid #333; padding: 12px 25px; font-size: 24px;
@@ -111,9 +111,9 @@
         .ttd-tanggal { margin-bottom: 80px; }
         .ttd-garis { border-top: 1px solid #333; padding-top: 5px; font-weight: bold; }
 
-        /* --- SLOT BARU: Logo / Footer Gambar Paling Bawah --- */
+        /* --- Slot Gambar Logo Kop Paling Bawah --- */
         .logo-footer-bawah {
-            margin-top: auto; /* Memaksa posisi selalu berada di paling bawah kertas A4 */
+            margin-top: auto; /* Memaksa agar selalu berada di dasar halaman A4 */
             text-align: center;
             width: 100%;
         }
@@ -123,7 +123,7 @@
             display: inline-block;
         }
 
-        /* --- Aturan Khusus Saat Cetak --- */
+        /* --- Aturan Cetak --- */
         @media print {
             .form-panel { display: none !important; }
             body { background: #fff; padding: 0; margin: 0; justify-content: flex-start; }
@@ -155,13 +155,17 @@
             <label>Kota & Tanggal</label>
             <input type="text" id="inTanggal" value="Bandung, 7 Juli 2026">
         </div>
+        <div class="form-group">
+            <label>Nama Kasir / Admin</label>
+            <input type="text" id="inJabatan" value="Kasir / Admin">
+        </div>
         <button class="btn-cetak" onclick="window.print()">Cetak / Simpan PDF</button>
     </div>
 
     <div class="a4-document">
         
         <div class="kop-gambar-atas">
-            <img src="kop-atas.png" alt="Kop Surat Atas">
+            <img src="kop.png" alt="Kop Surat Atas">
         </div>
         
         <div class="kwitansi-content">
@@ -198,13 +202,13 @@
                 <div class="box-nominal" id="outUang">Rp. 0,-</div>
                 <div class="area-ttd">
                     <div class="ttd-tanggal" id="outTanggal">-</div>
-                    <div class="ttd-garis">Kasir / Admin</div>
+                    <div class="ttd-garis" id="outJabatan">Kasir / Admin</div>
                 </div>
             </div>
         </div>
 
         <div class="logo-footer-bawah">
-            <img src="logo-bawah.png" alt="Footer Logo Bawah">
+            <img src="logo kop.png" alt="Footer Logo Bawah">
         </div>
 
     </div>
@@ -231,6 +235,7 @@
         const uang = parseInt(document.getElementById('inUang').value) || 0;
         const untuk = document.getElementById('inUntuk').value;
         const tanggal = document.getElementById('inTanggal').value;
+        const jabatan = document.getElementById('inJabatan').value;
 
         const formatRupiah = "Rp. " + uang.toLocaleString('id-ID') + ",-";
         const terbilang = uang > 0 ? kekata(uang) + " Rupiah" : "Nol Rupiah";
@@ -239,11 +244,12 @@
         document.getElementById('outNama').innerText = nama;
         document.getElementById('outUntuk').innerText = untuk;
         document.getElementById('outTanggal').innerText = tanggal;
+        document.getElementById('outJabatan').innerText = jabatan;
         document.getElementById('outUang').innerText = formatRupiah;
         document.getElementById('outTerbilang').innerText = terbilang.trim();
     }
 
-    const inputs = ['inNo', 'inNama', 'inUang', 'inUntuk', 'inTanggal'];
+    const inputs = ['inNo', 'inNama', 'inUang', 'inUntuk', 'inTanggal', 'inJabatan'];
     inputs.forEach(id => {
         document.getElementById(id).addEventListener('input', updateKwitansi);
     });
