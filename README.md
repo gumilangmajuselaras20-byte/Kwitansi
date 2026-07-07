@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi - Template Fleksibel</title>
+    <title>Kwitansi - Template Fleksibel 1 Halaman</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,20 +42,21 @@
         /* --- Kertas Kwitansi A4 (Sisi Kanan) --- */
         .a4-document {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm; /* Kunci tinggi A4 pas agar tidak overflow ke page 2 */
             background: #fff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: relative;
             box-sizing: border-box;
-            padding: 10mm 20mm 20mm 20mm;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        /* --- Slot Gambar Kop Surat Atas --- */
+        /* --- Kop Gambar Atas: Dibuat Full Menyentuh Sisi Kertas --- */
         .kop-gambar-atas {
             width: 100%;
-            margin-bottom: 20px;
+            margin: 0;
+            padding: 0;
         }
         .kop-gambar-atas img {
             width: 100%;
@@ -63,11 +64,14 @@
             display: block;
         }
 
-        /* --- Isi Konten Kwitansi --- */
+        /* --- Isi Konten Kwitansi dengan Padding Internal --- */
         .kwitansi-content {
             position: relative;
             z-index: 3;
             flex-grow: 1;
+            padding: 10mm 20mm 15mm 20mm; /* Sisi text tetap aman berjarak dari pinggir kertas */
+            display: flex;
+            flex-direction: column;
         }
         
         .kwitansi-header-detail {
@@ -83,7 +87,7 @@
 
         .garis-pembatas {
             border-top: 1px solid #333; border-bottom: 3px double #333;
-            height: 2px; margin: 15px 0 35px 0;
+            height: 2px; margin: 15px 0 30px 0;
         }
 
         /* --- Baris Isi Data Transaksi --- */
@@ -100,22 +104,26 @@
 
         /* --- Bagian Tanda Tangan & Nominal --- */
         .kwitansi-footer {
-            margin-top: 60px; display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 40px;
+            margin-top: 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            margin-bottom: 30px;
         }
         .box-nominal {
             border: 2px solid #333; padding: 12px 25px; font-size: 24px;
             font-weight: bold; background-color: #f9f9f9; font-family: 'Courier New', monospace;
         }
         .area-ttd { text-align: center; width: 220px; font-size: 15px; }
-        .ttd-tanggal { margin-bottom: 80px; }
+        .ttd-tanggal { margin-bottom: 75px; }
         .ttd-garis { border-top: 1px solid #333; padding-top: 5px; font-weight: bold; }
 
         /* --- Slot Gambar Logo Kop Paling Bawah --- */
         .logo-footer-bawah {
-            margin-top: auto; /* Memaksa agar selalu berada di dasar halaman A4 */
+            margin-top: auto; /* Mendorong otomatis ke posisi terbawah konten */
             text-align: center;
             width: 100%;
+            padding-bottom: 5mm;
         }
         .logo-footer-bawah img {
             max-width: 100%;
@@ -123,11 +131,20 @@
             display: inline-block;
         }
 
-        /* --- Aturan Cetak --- */
+        /* --- Aturan Cetak Presisi --- */
         @media print {
+            @page {
+                size: A4;
+                margin: 0; /* Menghilangkan margin browser agar kop bisa full ke tepi */
+            }
             .form-panel { display: none !important; }
             body { background: #fff; padding: 0; margin: 0; justify-content: flex-start; }
-            .a4-document { box-shadow: none; }
+            .a4-document { 
+                box-shadow: none; 
+                width: 210mm;
+                height: 297mm;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
@@ -205,16 +222,15 @@
                     <div class="ttd-garis" id="outJabatan">Kasir / Admin</div>
                 </div>
             </div>
-        </div>
 
-        <div class="logo-footer-bawah">
-            <img src="logo kop.png" alt="Footer Logo Bawah">
+            <div class="logo-footer-bawah">
+                <img src="logo kop.png" alt="Footer Logo Bawah">
+            </div>
         </div>
 
     </div>
 
 <script>
-    // Konversi Angka ke Huruf Indonesia Terbilang Otomatis
     function kekata(angka) {
         const bilne = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
         let temp = "";
