@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Kwitansi Digital</title>
+    <title>Kwitansi - PT. GUMILANG MAJU SELARAS</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -49,12 +49,34 @@
         .header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             border-bottom: 3px double #333;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
-        .perusahaan h2 { margin: 0 0 5px 0; text-transform: uppercase; }
-        .perusahaan p { margin: 0; font-size: 14px; }
+        .identitas-perusahaan {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo-perusahaan img {
+            width: 80px; /* Atur ukuran lebar logo di sini */
+            height: auto;
+            object-fit: contain;
+        }
+        .perusahaan h2 { 
+            margin: 0 0 5px 0; 
+            text-transform: uppercase; 
+            font-size: 20px;
+            font-family: Arial, sans-serif; /* Agar nama PT terlihat tegas */
+            font-weight: bold;
+        }
+        .perusahaan p { 
+            margin: 2px 0; 
+            font-size: 12px; 
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
         .judul { text-align: right; }
         .judul h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
         .row {
@@ -109,8 +131,9 @@
 <body>
 
 <div class="container">
+    <!-- INPUT FORM (Sembunyi saat dicetak) -->
     <div class="form-input">
-        <h3 style="margin-top:0;">Isi Data Kwitansi</h3>
+        <h3 style="margin-top:0; font-family: Arial;">Isi Data Transaksi Kwitansi</h3>
         <div class="form-group">
             <label>Nomor Kwitansi</label>
             <input type="text" id="inNo" value="KW-2026-001">
@@ -125,21 +148,30 @@
         </div>
         <div class="form-group">
             <label>Untuk Pembayaran</label>
-            <textarea id="inUntuk" rows="2">Pembayaran lisensi software cloud</textarea>
+            <textarea id="inUntuk" rows="2">Pembayaran pengadaan barang inventaris kantor</textarea>
         </div>
         <div class="form-group">
             <label>Kota & Tanggal</label>
-            <input type="text" id="inTanggal" value="Jakarta, 7 Juli 2026">
+            <input type="text" id="inTanggal" value="Bandung, 7 Juli 2026">
         </div>
         <button class="btn-cetak" onclick="window.print()">Cetak Kwitansi</button>
     </div>
 
+    <!-- TAMPILAN KWITANSI (Yang akan dicetak) -->
     <div class="kwitansi-box">
         <div class="header">
-            <div class="perusahaan">
-                <h2>Nama Perusahaan Anda</h2>
-                <p>Jl. Contoh Alamat No. 45, Kota</p>
-                <p>Telp: 0812-3456-7890</p>
+            <div class="identitas-perusahaan">
+                <!-- Bagian Logo -->
+                <div class="logo-perusahaan">
+                    <!-- Jika ingin memakai file lokal di GitHub, ubah src menjadi "logo.png" atau "logo.jpg" -->
+                    <img src="https://via.placeholder.com/150" alt="Logo PT">
+                </div>
+                <!-- Bagian Detail Alamat PT -->
+                <div class="perusahaan">
+                    <h2>PT. GUMILANG MAJU SELARAS</h2>
+                    <p>Jl. Kencana Wangi I No. 10, Komplek Pandan Wangi, Bandung 40287</p>
+                    <p>HP. 0822 1884 4662 | Email: gumilangmajuselaras@gmail.com</p>
+                </div>
             </div>
             <div class="judul">
                 <h1>KWITANSI</h1>
@@ -178,7 +210,7 @@
 </div>
 
 <script>
-    // Fungsi Konversi Angka ke Kata Terbilang
+    // Fungsi Konversi Angka ke Kata Terbilang Bahasa Indonesia
     function kekata(angka) {
         const bilne = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
         let temp = "";
@@ -216,13 +248,13 @@
         document.getElementById('outTerbilang').innerText = terbilang.trim();
     }
 
-    // Pasang Event Listener agar otomatis berubah saat diketik
+    // Pasang Event Listener
     const inputs = ['inNo', 'inNama', 'inUang', 'inUntuk', 'inTanggal'];
     inputs.forEach(id => {
         document.getElementById(id).addEventListener('input', updateKwitansi);
     });
 
-    // Jalankan fungsi pertama kali saat halaman dimuat
+    // Jalankan pertama kali saat reload
     updateKwitansi();
 </script>
 
