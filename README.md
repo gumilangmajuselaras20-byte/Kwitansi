@@ -3,321 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi PT. GUMILANG MAJU SELARAS dengan Kop Surat</title>
+    <title>Kwitansi - PT. GUMILANG MAJU SELARAS</title>
     <style>
-        @media print {
-            body { margin: 0; padding: 0; }
-            .no-print { display: none !important; }
-            .a4-page { box-shadow: none; border: none; }
-        }
-        
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 20px;
-            padding: 0;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
             display: flex;
+            gap: 20px;
             justify-content: center;
         }
 
-        .no-print-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: white;
-            padding: 15px;
+        /* --- Panel Form Pengisian (Sisi Kiri) --- */
+        .form-panel {
+            width: 320px;
+            background: #fff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
         }
+        .form-panel h3 { margin-top: 0; margin-bottom: 15px; color: #333; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 8px; box-sizing: border-box;
+            border: 1px solid #ccc; border-radius: 4px; font-family: Arial, sans-serif;
+        }
+        .btn-cetak {
+            display: block; width: 100%; padding: 12px;
+            background-color: #27ae60; color: white; text-align: center;
+            border: none; cursor: pointer; font-size: 16px; font-weight: bold;
+            border-radius: 4px; margin-top: 15px;
+        }
+        .btn-cetak:hover { background-color: #219150; }
 
-        .a4-page {
+        /* --- Kertas Kwitansi A4 (Sisi Kanan) --- */
+        .a4-document {
             width: 210mm;
             min-height: 297mm;
-            padding: 20mm;
-            margin: 0;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: relative;
             box-sizing: border-box;
+            padding: 40mm 20mm 20mm 20mm; /* Jarak atas disisakan untuk Kop */
             display: flex;
             flex-direction: column;
         }
 
-        /* --- STYLING KOP SURAT (IMAGE 3) --- */
-        .letterhead-header {
+        /* --- Desain Kop Surat Kreatif (Tanpa Gambar File) --- */
+        .kop-wave {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 40mm; /* Atur tinggi agar pas */
-            overflow: hidden;
+            top: 0; left: 0; right: 0;
+            height: 130px;
+            background: linear-gradient(135deg, #a2d2bb 0%, #8ec3a7 60%, #ffffff 100%);
+            border-bottom-left-radius: 50% 30px;
+            border-bottom-right-radius: 100% 15px;
             z-index: 1;
         }
-        
-        .letterhead-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-        }
-
-        .letterhead-logo-container {
+        .kop-logo-container {
             position: absolute;
-            top: 15mm; /* Sesuaikan dengan gambar */
-            right: 20mm; /* Sesuaikan dengan margin */
+            top: 25px; right: 40px;
             z-index: 2;
-            text-align: right;
+            text-align: center;
+        }
+        .kop-logo-container img {
+            width: 65px; height: auto;
+        }
+        .kop-logo-container .nama-pt-mini {
+            display: block; font-size: 10px; font-weight: bold;
+            color: #1e4631; margin-top: 2px; line-height: 1.1;
         }
 
-        .letterhead-logo-container img {
-            height: 15mm; /* Sesuaikan ukuran logo */
-            width: auto;
-        }
-
-        .letterhead-logo-container .company-name-text {
-            display: block;
-            font-size: 10pt;
-            color: #333;
-            margin-top: 2mm;
-            font-weight: bold;
-        }
-
-        /* Konten utama di bawah kop surat */
-        .page-content {
-            margin-top: 45mm; /* Memberi ruang untuk kop */
+        /* --- Isi Konten Kwitansi --- */
+        .kwitansi-content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             flex-grow: 1;
         }
-
-        /* --- STYLING KWITANSI (IMAGE 2) --- */
-        .kwitansi-header-row {
+        .kwitansi-header-detail {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-        }
-
-        .company-info {
-            flex-grow: 1;
-            padding-left: 20px; /* Ruang untuk logo di kop */
-        }
-
-        .company-info h1 {
-            font-size: 18pt;
-            margin: 0 0 5px 0;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .company-info p {
-            font-size: 9pt;
-            margin: 2px 0;
-            color: #555;
-            line-height: 1.3;
-        }
-
-        .kwitansi-title-box {
-            text-align: right;
-        }
-
-        .kwitansi-title-box h2 {
-            font-size: 20pt;
-            margin: 0;
-            font-weight: normal;
-            color: #333;
-        }
-
-        .kwitansi-title-box p {
-            font-size: 10pt;
-            margin: 5px 0 0 0;
-            color: #555;
-        }
-
-        .separator-line {
-            border-top: 2px solid #333;
-            margin-bottom: 10px;
-        }
-
-        .double-separator-line {
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-            height: 3px;
-            margin-bottom: 20px;
-        }
-
-        .data-row {
-            display: flex;
-            margin-bottom: 15px;
-            font-size: 10pt;
-        }
-
-        .label {
-            width: 180px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .colon {
-            width: 15px;
-        }
-
-        .value {
-            flex-grow: 1;
-            border-bottom: 1px dashed #999;
-            padding-bottom: 3px;
-            color: #555;
-        }
-
-        .terbilang-box {
-            background-color: #f2f2f2;
-            padding: 10px;
-            margin-top: 5px;
-            font-style: italic;
-            font-weight: bold;
-            border-radius: 4px;
-            color: #333;
-        }
-
-        .footer-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 40px;
-        }
-
-        .amount-box {
-            border: 2px solid #333;
-            padding: 10px 20px;
-            font-size: 16pt;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .signature-box {
-            text-align: center;
-            font-size: 10pt;
-            color: #333;
-        }
-
-        .date-text {
-            margin-bottom: 60px;
-        }
-
-        .signature-line {
-            border-top: 1px solid #333;
-            width: 200px;
-            margin: 0 auto;
-        }
-
-        .signatory-title {
-            margin-top: 5px;
-            font-weight: bold;
-        }
-
-        /* --- STYLING FOOTER KOP SURAT (IMAGE 3) --- */
-        .letterhead-footer {
-            position: absolute;
-            bottom: 10mm;
-            left: 20mm;
-            right: 20mm;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .letterhead-footer-line {
-            border-top: 1px solid #666;
             margin-bottom: 5px;
         }
+        .info-pt h2 { margin: 0 0 5px 0; font-size: 20px; color: #1e4631; }
+        .info-pt p { margin: 2px 0; font-size: 11px; color: #444; }
+        
+        .judul-kwitansi-box { text-align: right; }
+        .judul-kwitansi-box h1 { margin: 0; font-size: 28px; letter-spacing: 2px; color: #333; }
+        .judul-kwitansi-box p { margin: 5px 0 0 0; font-size: 14px; font-weight: bold; }
 
-        .letterhead-footer-text {
-            font-size: 8pt;
-            color: #666;
-            line-height: 1.4;
+        .garis-pembatas {
+            border-top: 1px solid #333; border-bottom: 3px double #333;
+            height: 2px; margin: 15px 0 25px 0;
         }
 
-        .letterhead-footer-text a {
-            color: #0066cc;
-            text-decoration: none;
+        /* --- Baris Isi --- */
+        .kwitansi-row { display: flex; margin-bottom: 18px; align-items: baseline; }
+        .row-label { width: 180px; font-weight: bold; font-size: 14px; color: #222; }
+        .row-colon { width: 20px; font-size: 14px; }
+        .row-value { flex: 1; border-bottom: 1px dashed #888; padding-bottom: 3px; font-size: 14px; color: #333; }
+        
+        .box-terbilang { 
+            background-color: #eaedd7; font-style: italic; padding: 10px; 
+            font-weight: bold; border-radius: 4px; color: #1e4631; border-left: 4px solid #8ec3a7;
+        }
+
+        /* --- Bagian Tanda Tangan & Nominal --- */
+        .kwitansi-footer {
+            margin-top: 50px; display: flex; justify-content: space-between; align-items: flex-end;
+        }
+        .box-nominal {
+            border: 2px solid #333; padding: 12px 25px; font-size: 22px;
+            font-weight: bold; background-color: #f9f9f9; font-family: 'Courier New', monospace;
+        }
+        .area-ttd { text-align: center; width: 220px; font-size: 14px; }
+        .ttd-tanggal { margin-bottom: 70px; }
+        .ttd-garis { border-top: 1px solid #333; padding-top: 5px; font-weight: bold; }
+
+        /* --- Footer Dokumen Resmi --- */
+        .dokumen-footer {
+            border-top: 1px solid #ccc; padding-top: 5px; margin-top: 40px;
+            text-align: center; font-size: 10px; color: #666; line-height: 1.4;
+        }
+
+        /* --- Aturan Khusus Saat Tombol Cetak Ditekan --- */
+        @media print {
+            .form-panel { display: none !important; }
+            body { background: #fff; padding: 0; margin: 0; justify-content: flex-start; }
+            .a4-document { box-shadow: none; padding-top: 40mm; }
         }
     </style>
 </head>
 <body>
 
-<div class="no-print-container no-print">
-    <button onclick="window.print()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Cetak/Simpan PDF</button>
-</div>
-
-<div class="a4-page">
-    <div class="letterhead-header">
-        <img src="letterhead_header.png" alt="Header Kop Surat GMS">
+    <!-- PANEL EDIT MANUAL (Hanya tampil di layar) -->
+    <div class="form-panel">
+        <h3>Edit Data Kwitansi</h3>
+        <div class="form-group">
+            <label>Nomor Kwitansi</label>
+            <input type="text" id="inNo" value="KW-2026-001">
+        </div>
+        <div class="form-group">
+            <label>Telah Diterima Dari</label>
+            <input type="text" id="inNama" value="Samsuri Sidik">
+        </div>
+        <div class="form-group">
+            <label>Jumlah Uang (Angka)</label>
+            <input type="number" id="inUang" value="35000000">
+        </div>
+        <div class="form-group">
+            <label>Untuk Pembayaran</label>
+            <textarea id="inUntuk" rows="4">Material dan consumable pada proyek “Pemasangan Instalasi Pipa Air Compressor Sus-304” Berlokasi di SPIN, Jl. Raya Narogong, Bekasi</textarea>
+        </div>
+        <div class="form-group">
+            <label>Kota & Tanggal</label>
+            <input type="text" id="inTanggal" value="Bandung, 7 Juli 2026">
+        </div>
+        <button class="btn-cetak" onclick="window.print()">Cetak / Simpan PDF</button>
     </div>
 
-    <div class="letterhead-logo-container">
-        <img src="logo.png" alt="Logo PT GMS">
-        <span class="company-name-text">PT. GUMILANG<br>MAJU SELARAS</span>
+    <!-- KERTAS PRINTER KWITANSI A4 -->
+    <div class="a4-document">
+        <!-- Latar Belakang Gelombang Atas Hijau -->
+        <div class="kop-wave"></div>
+        
+        <!-- Logo Kanan Atas -->
+        <div class="kop-logo-container">
+            <img src="logo.png" alt="Logo">
+            <span class="nama-pt-mini">PT. GUMILANG<br>MAJU SELARAS</span>
+        </div>
+
+        <div class="kwitansi-content">
+            <!-- Header Info Perusahaan -->
+            <div class="kwitansi-header-detail">
+                <div class="info-pt">
+                    <h2>PT. GUMILANG MAJU SELARAS</h2>
+                    <p>Jl. Kencana Wangi I No. 10, Komplek Pandan Wangi, Bandung 40287</p>
+                    <p>HP. 0822 1884 4662 | Email: gumilangmajuselaras@gmail.com</p>
+                </div>
+                <div class="judul-kwitansi-box">
+                    <h1>KWITANSI</h1>
+                    <div id="outNo" style="font-size: 14px; margin-top: 5px;">No. <b>-</b></div>
+                </div>
+            </div>
+
+            <div class="garis-pembatas"></div>
+
+            <!-- Konten Baris Data -->
+            <div class="kwitansi-row">
+                <div class="row-label">Telah Diterima Dari</div>
+                <div class="row-colon">:</div>
+                <div class="row-value" id="outNama">-</div>
+            </div>
+
+            <div class="kwitansi-row" style="margin-bottom: 10px;">
+                <div class="row-label">Uang Sejumlah</div>
+                <div class="row-colon">:</div>
+                <div class="row-value" style="border: none;"></div>
+            </div>
+            <div class="box-terbilang" id="outTerbilang">-</div>
+            <br>
+
+            <div class="kwitansi-row">
+                <div class="row-label">Untuk Pembayaran</div>
+                <div class="row-colon">:</div>
+                <div class="row-value" id="outUntuk" style="line-height: 1.5;">-</div>
+            </div>
+
+            <!-- Footer Tanda Tangan & Uang -->
+            <div class="kwitansi-footer">
+                <div class="box-nominal" id="outUang">Rp. 0,-</div>
+                <div class="area-ttd">
+                    <div class="ttd-tanggal" id="outTanggal">-</div>
+                    <div class="ttd-garis">Kasir / Admin</div>
+                </div>
+            </div>
+
+            <!-- Catatan Kaki/Footer Lembaga Resmi -->
+            <div class="dokumen-footer">
+                PT. Gumilang Maju Selaras<br>
+                Kencana Wangi I No. 10, Bandung | Email: gumilangmajuselaras@gmail.com | Phone: 022-7313361
+            </div>
+        </div>
     </div>
 
-    <div class="page-content">
-        <div class="kwitansi-header-row">
-            <div class="company-info">
-                <h1>PT. GUMILANG MAJU SELARAS</h1>
-                <p>Jl. Kencana Wangi I No. 10, Komplek Pandan Wangi, Bandung 40287</p>
-                <p>HP. 0822 1884 4662 | Email: gumilangmajuselaras@gmail.com</p>
-            </div>
-            <div class="kwitansi-title-box">
-                <h2>KWITANSI</h2>
-                <p>No. KW-2026-001</p>
-            </div>
-        </div>
+<script>
+    // System Otomatis Merubah Angka ke Huruf Indonesia
+    function kekata(angka) {
+        const bilne = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+        let temp = "";
+        if (angka < 12) { temp = " " + bilne[angka]; }
+        else if (angka < 20) { temp = kekata(angka - 10) + " Belas"; }
+        else if (angka < 100) { temp = kekata(Math.floor(angka / 10)) + " Puluh" + kekata(angka % 10); }
+        else if (angka < 200) { temp = " Seratus" + kekata(angka - 100); }
+        else if (angka < 1000) { temp = kekata(Math.floor(angka / 100)) + " Ratus" + kekata(angka % 100); }
+        else if (angka < 2000) { temp = " Seribu" + kekata(angka - 1000); }
+        else if (angka < 1000000) { temp = kekata(Math.floor(angka / 1000)) + " Ribu" + kekata(angka % 1000); }
+        else if (angka < 1000000000) { temp = kekata(Math.floor(angka / 1000000)) + " Juta" + kekata(angka % 1000000); }
+        return temp;
+    }
 
-        <div class="double-separator-line"></div>
+    function updateKwitansi() {
+        const no = document.getElementById('inNo').value;
+        const nama = document.getElementById('inNama').value;
+        const uang = parseInt(document.getElementById('inUang').value) || 0;
+        const untuk = document.getElementById('inUntuk').value;
+        const tanggal = document.getElementById('inTanggal').value;
 
-        <div class="data-row">
-            <div class="label">Telah Diterima Dari</div>
-            <div class="colon">:</div>
-            <div class="value">Samsuri Sidik</div>
-        </div>
+        const formatRupiah = "Rp. " + uang.toLocaleString('id-ID') + ",-";
+        const terbilang = uang > 0 ? kekata(uang) + " Rupiah" : "Nol Rupiah";
 
-        <div class="data-row" style="flex-direction: column;">
-            <div style="display: flex;">
-                <div class="label">Uang Sejumlah</div>
-                <div class="colon">:</div>
-                <div class="value" style="border: none;"></div> </div>
-            <div class="terbilang-box">
-                Tiga Puluh Lima Juta Rupiah
-            </div>
-        </div>
+        document.getElementById('outNo').innerHTML = "No. <b>" + no + "</b>";
+        document.getElementById('outNama').innerText = nama;
+        document.getElementById('outUntuk').innerText = untuk;
+        document.getElementById('outTanggal').innerText = tanggal;
+        document.getElementById('outUang').innerText = formatRupiah;
+        document.getElementById('outTerbilang').innerText = terbilang.trim();
+    }
 
-        <div class="data-row">
-            <div class="label">Untuk Pembayaran</div>
-            <div class="colon">:</div>
-            <div class="value">Material dan consumable pada proyek “Pemasangan Instalasi Pipa Air Compressor Sus-304” Berlokasi di SPIN, Jl. Raya Narogong, Bekasi</div>
-        </div>
+    const inputs = ['inNo', 'inNama', 'inUang', 'inUntuk', 'inTanggal'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', updateKwitansi);
+    });
 
-        <div class="footer-row">
-            <div class="amount-box">
-                Rp. 35.000.000,-
-            </div>
-            <div class="signature-box">
-                <p class="date-text">Bandung, 7 Juli 2026</p>
-                <div class="signature-line"></div>
-                <p class="signatory-title">Kasir / Admin</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="letterhead-footer">
-        <div class="letterhead-footer-line"></div>
-        <p class="letterhead-footer-text">
-            PT. Gumilang Maju Selaras<br>
-            Kencana Wangi I No. 10, Bandung | Email: <a href="mailto:gumilangmajuselaras@gmail.com">gumilangmajuselaras@gmail.com</a><br>
-            Phone: 022-7313361
-        </p>
-    </div>
-</div>
-
+    updateKwitansi();
+</script>
 </body>
 </html>
