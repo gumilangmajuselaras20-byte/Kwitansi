@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi - Template Fleksibel 1 Halaman</title>
+    <title>Kwitansi Resmi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@
         /* --- Kertas Kwitansi A4 (Sisi Kanan) --- */
         .a4-document {
             width: 210mm;
-            height: 297mm; /* Kunci tinggi A4 pas agar tidak overflow ke page 2 */
+            height: 297mm;
             background: #fff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: relative;
@@ -52,7 +52,7 @@
             overflow: hidden;
         }
 
-        /* --- Kop Gambar Atas: Dibuat Full Menyentuh Sisi Kertas --- */
+        /* --- Kop Gambar Atas --- */
         .kop-gambar-atas {
             width: 100%;
             margin: 0;
@@ -64,25 +64,37 @@
             display: block;
         }
 
-        /* --- Isi Konten Kwitansi dengan Padding Internal --- */
+        /* --- Isi Konten Kwitansi --- */
         .kwitansi-content {
             position: relative;
             z-index: 3;
             flex-grow: 1;
-            padding: 10mm 20mm 15mm 20mm; /* Sisi text tetap aman berjarak dari pinggir kertas */
+            padding: 10mm 20mm 15mm 20mm;
             display: flex;
             flex-direction: column;
         }
         
+        /* --- Judul KWITANSI Sekarang Rata Tengah --- */
         .kwitansi-header-detail {
             display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             margin-bottom: 5px;
+            width: 100%;
         }
         
-        .judul-kwitansi-box { text-align: right; }
-        .judul-kwitansi-box h1 { margin: 0; font-size: 32px; letter-spacing: 2px; color: #333; }
+        .judul-kwitansi-box { 
+            text-align: center; 
+            width: 100%;
+        }
+        .judul-kwitansi-box h1 { 
+            margin: 0; 
+            font-size: 32px; 
+            letter-spacing: 4px; 
+            color: #333; 
+            font-weight: bold;
+        }
         .judul-kwitansi-box p { margin: 5px 0 0 0; font-size: 14px; font-weight: bold; }
 
         .garis-pembatas {
@@ -120,7 +132,7 @@
 
         /* --- Slot Gambar Logo Kop Paling Bawah --- */
         .logo-footer-bawah {
-            margin-top: auto; /* Mendorong otomatis ke posisi terbawah konten */
+            margin-top: auto;
             text-align: center;
             width: 100%;
             padding-bottom: 5mm;
@@ -131,20 +143,30 @@
             display: inline-block;
         }
 
-        /* --- Aturan Cetak Presisi --- */
+        /* --- Aturan Cetak Presisi & Pembersihan Teks Luar --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0; /* Menghilangkan margin browser agar kop bisa full ke tepi */
+                margin: 0;
             }
-            .form-panel { display: none !important; }
-            body { background: #fff; padding: 0; margin: 0; justify-content: flex-start; }
-            .a4-document { 
-                box-shadow: none; 
+            /* Menyembunyikan seluruh elemen di luar kertas dokumen utama */
+            body * {
+                visibility: hidden;
+            }
+            /* Menampilkan kembali HANYA area kertas kwitansi */
+            .a4-document, .a4-document * {
+                visibility: visible;
+            }
+            .a4-document {
+                position: absolute;
+                left: 0;
+                top: 0;
                 width: 210mm;
                 height: 297mm;
+                box-shadow: none;
                 page-break-inside: avoid;
             }
+            .form-panel { display: none !important; }
         }
     </style>
 </head>
@@ -189,7 +211,7 @@
             <div class="kwitansi-header-detail">
                 <div class="judul-kwitansi-box">
                     <h1>KWITANSI</h1>
-                    <div id="outNo" style="font-size: 15px; margin-top: 5px;">No. <b>-</b></div>
+                    <div id="outNo" style="font-size: 15px; margin-top: 6px; letter-spacing: 0.5px;">No. <b>-</b></div>
                 </div>
             </div>
 
