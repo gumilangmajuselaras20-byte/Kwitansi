@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwitansi Kosong / Template Fleksibel</title>
+    <title>Kwitansi - Template Fleksibel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,20 +47,20 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: relative;
             box-sizing: border-box;
-            padding: 45mm 20mm 20mm 20mm; /* Ruang atas untuk kop gelombang */
+            padding: 10mm 20mm 20mm 20mm;
             display: flex;
             flex-direction: column;
         }
 
-        /* --- Desain Latar Belakang Gelombang Atas --- */
-        .kop-wave {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 130px;
-            background: linear-gradient(135deg, #a2d2bb 0%, #8ec3a7 60%, #ffffff 100%);
-            border-bottom-left-radius: 50% 30px;
-            border-bottom-right-radius: 100% 15px;
-            z-index: 1;
+        /* --- Slot Gambar Kop Surat Atas (Hasil Crop) --- */
+        .kop-gambar-atas {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .kop-gambar-atas img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* --- Isi Konten Kwitansi --- */
@@ -70,10 +70,9 @@
             flex-grow: 1;
         }
         
-        /* Layout Judul Kwitansi Utama */
         .kwitansi-header-detail {
             display: flex;
-            justify-content: flex-end; /* Menggeser judul ke kanan karena info PT kosong */
+            justify-content: flex-end;
             align-items: flex-end;
             margin-bottom: 5px;
         }
@@ -94,14 +93,15 @@
         .row-value { flex: 1; border-bottom: 1px dashed #888; padding-bottom: 3px; font-size: 15px; color: #333; }
         
         .box-terbilang { 
-            background-color: #eaedd7; font-style: italic; padding: 12px; 
-            font-weight: bold; border-radius: 4px; color: #1e4631; border-left: 4px solid #8ec3a7;
+            background-color: #f5f5f5; font-style: italic; padding: 12px; 
+            font-weight: bold; border-radius: 4px; color: #333; border-left: 4px solid #666;
             font-size: 15px;
         }
 
         /* --- Bagian Tanda Tangan & Nominal --- */
         .kwitansi-footer {
             margin-top: 60px; display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 40px; /* Jarak sebelum logo paling bawah */
         }
         .box-nominal {
             border: 2px solid #333; padding: 12px 25px; font-size: 24px;
@@ -111,11 +111,23 @@
         .ttd-tanggal { margin-bottom: 80px; }
         .ttd-garis { border-top: 1px solid #333; padding-top: 5px; font-weight: bold; }
 
+        /* --- SLOT BARU: Logo / Footer Gambar Paling Bawah --- */
+        .logo-footer-bawah {
+            margin-top: auto; /* Memaksa posisi selalu berada di paling bawah kertas A4 */
+            text-align: center;
+            width: 100%;
+        }
+        .logo-footer-bawah img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+
         /* --- Aturan Khusus Saat Cetak --- */
         @media print {
             .form-panel { display: none !important; }
             body { background: #fff; padding: 0; margin: 0; justify-content: flex-start; }
-            .a4-document { box-shadow: none; padding-top: 45mm; }
+            .a4-document { box-shadow: none; }
         }
     </style>
 </head>
@@ -147,7 +159,10 @@
     </div>
 
     <div class="a4-document">
-        <div class="kop-wave"></div>
+        
+        <div class="kop-gambar-atas">
+            <img src="kop-atas.png" alt="Kop Surat Atas">
+        </div>
         
         <div class="kwitansi-content">
             <div class="kwitansi-header-detail">
@@ -187,6 +202,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="logo-footer-bawah">
+            <img src="logo-bawah.png" alt="Footer Logo Bawah">
+        </div>
+
     </div>
 
 <script>
